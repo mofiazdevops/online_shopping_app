@@ -1,0 +1,34 @@
+pipeline {
+    agent { label "fiaz" };
+    
+    stages {
+        stage ("Code") {
+            steps {
+                echo "Cloning the code"
+                git url: "https://github.com/mofiazdevops/online_shopping_app.git", branch: "master"
+            }
+        }
+        stage ('Build') {
+            steps {
+                echo "build the image"
+                sh "docker build -t online_shop ."
+            }
+        }
+        stage ("Test") {
+            steps {
+                echo "Testing the code"
+            }
+        }
+        stage ("Push") {
+            steps {
+                echo "push docker image on dockerHub"
+            }
+        }
+        stage ("Deploy") {
+            steps {
+                echo "deploy the app"
+                sh "docker compose up -d --build online_shop" 
+            }
+        }
+    }
+}
